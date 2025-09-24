@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -24,8 +28,8 @@
     "express": "^5.1.0"
   },
   "lint-staged": {
-  "*.js": "eslint --fix"
-},
+    "src/**/*.js": "eslint --fix"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
