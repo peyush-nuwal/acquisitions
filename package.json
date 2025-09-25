@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "imports": {
+    "#config/*": "./src/config/*",
+    "#controllers/*": "./src/controllers/*",
+    "#middleware/*": "./src/middleware/*",
+    "#models/*": "./src/models/*",
+    "#routes/*": "./src/routes/*",
+    "#services/*": "./src/services/*",
+    "#utils/*": "./src/utils/*",
+    "#validations/*": "./src/validations/*"
+  },
   "scripts": {
     "test": "",
     "dev": "node --watch src/index.js",
@@ -11,9 +21,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "db:generate":"drizzle-kit generate",
-    "db:migrate":"drizzle-kit migrate",
-    "db:studio":"drizzle-kit studio"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "repository": {
     "type": "git",
@@ -31,7 +41,8 @@
     "@neondatabase/serverless": "^1.0.1",
     "dotenv": "^17.2.2",
     "drizzle-orm": "^0.44.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "winston": "^3.17.0"
   },
   "lint-staged": {
     "src/**/*.js": "eslint --fix"
