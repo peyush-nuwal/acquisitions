@@ -1,18 +1,19 @@
 {
-  "id": "76c4d008-f2f1-4562-9b86-e6b3aa3b709d",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "d19071bf-765f-4b1e-9685-5494a11bf166",
+  "prevId": "3db26326-84ab-44ed-9d98-d9a94286abfd",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.user": {
-      "name": "user",
+    "public.users": {
+      "name": "users",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
@@ -58,8 +59,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "users_email_unique": {
+          "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
