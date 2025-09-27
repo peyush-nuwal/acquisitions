@@ -10,3 +10,4 @@ export const signInSchema = z.object({
   email: z.string().email().toLowerCase().trim(),
   password: z.string().min(6).max(128),
 });
+

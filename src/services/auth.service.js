@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import logger from '#config/logger.js';
-import {db} from '#config/database.js';
+import { db } from '#config/database.js';
 import { eq } from 'drizzle-orm';
 import users from '#models/user.model.js';
 
@@ -32,19 +32,33 @@ export const comparePassword = async (password, hash) => {
 };
 
 /**
- * Create User in database
+ * Check if a user exists by email
+ * @returns user object if found, otherwise null
  */
-
-export const createUser = async ({ name, email, password, role = 'user' }) => {
+export const isUserExist = async email => {
   try {
-    // Checking if user exists in database or not
-    const existingUser = await db
+    const [existingUser] = await db
       .select()
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
 
-    if (existingUser.length > 0) {
+    return existingUser || null;
+  } catch (error) {
+    logger.error('Error checking if user exists:', error);
+    throw new Error('Internal server error while checking user exists');
+  }
+};
+
+/**
+ * Create User in database
+ */
+export const createUser = async ({ name, email, password, role = 'user' }) => {
+  try {
+    // Reuse isUserExist
+    const existingUser = await isUserExist(email);
+
+    if (existingUser) {
       throw new Error('User already exists');
     }
 
@@ -67,10 +81,20 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
     return newUser;
   } catch (error) {
     logger.error('Error creating user:', error);
-    // If it's already a specific error message, preserve it
     if (error.message === 'User already exists') {
-      throw error;
+      throw error; // preserve specific error
     }
     throw new Error('Internal server error while creating user');
   }
+};
+
+// sign in 
+export const authenticateUser = async (email, password) => {
+  const user = await isUserExist(email);
+  if (!user) throw new Error('User does not exist');
+
+  const isPasswordCorrect = await comparePassword(password, user.password);
+  if (!isPasswordCorrect) throw new Error('Invalid credentials');
+
+  return user; // controller decides what to do with it
 };
