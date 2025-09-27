@@ -96,5 +96,20 @@ export const signIn = async (req, res) => {
 };
 
 export const signOut = (req, res) => {
-  res.status(200).json({ message: 'User signed out successfully' });
+  try {
+    // Clear the auth cookie
+    cookies.clear(res,'token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    logger.info('User signed out successfully');
+    return res.status(200).json({ message: 'User signed out successfully' });
+  } catch (error) {
+    logger.error('Error during sign out:', error);
+    return res
+      .status(500)
+      .json({ error: 'Internal server error during sign out' });
+  }
 };
