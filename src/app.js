@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 
 import logger from '#config/logger.js';
 import authRoutes from '#routes/auth.route.js';
+import securityMiddleware from '#middleware/security.middleware.js';
+
 
 const app = express();
 
@@ -22,6 +24,9 @@ app.use(
     stream: { write: message => logger.info(message.trim()) },
   })
 );
+
+// arcjet Middleware
+app.use(securityMiddleware);
 
 // Root route
 app.get('/', (req, res) => {
